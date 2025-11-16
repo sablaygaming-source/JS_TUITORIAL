@@ -1,0 +1,1352 @@
+
+console.log( variablehere );
+
+console.log() in JavaScript does not display output directly on the visible HTML page. Its purpose is to output messages and data to the browser's developer console.
+
+//declaration
+var = A;
+
+let = A;
+
+const  =A;
+
+
+If you need to display information directly on the HTML page, you would typically manipulate the Document Object Model (DOM) using methods like:
+document.getElementById("elementId").innerHTML = "Your message";
+document.getElementById("elementId").innerText = "Your message";
+document.write("Your message"); (though document.write() is generally discouraged for dynamic content after the page has loaded).
+
+
+property called length
+console.log('Hello'.length); // Prints 5
+
+
+console.log('hello'.toUpperCase()); // Prints 'HELLO'
+console.log('Hey'.startsWith('H')); // Prints true
+
+console.log('Codecademy'.toUpperCase()); //prints CODECADEMY all capital
+
+// Use a string method to log the following string without whitespace at the beginning and end of it.
+console.log('    Remove whitespace   '.trim()); //removes white space in first and last
+
+
+//complete reference for Math object javascript
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/min
+
+
+output in javascript using HTML
+HTML
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>The `document.write()` Method</h1>
+
+<script>
+document.write("This text is written directly to the document.");  //use HTML code like <p> </p> to use another line
+</script>
+
+</body>
+</html>
+
+//using getElementById
+!DOCTYPE html>
+<html>
+<body>
+
+<h1>The `textContent` Method</h1>
+
+<div id="message"></div>
+
+<script>
+const messageDiv = document.getElementById("message");
+messageDiv.textContent = "This is a simple text message. <b>This part will not be bold.</b>";
+</script>
+
+</body>
+</html>
+
+//inner html
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>The `innerHTML` Method</h1>
+
+<p id="demo"></p>
+
+<script>
+document.getElementById("demo").innerHTML = "Hello, world! This text was added by JavaScript.";
+</script>
+
+</body>
+</html>
+
+
+FUNCTION BUTTON ON javascript
+
+//html
+..header here I shortcut it
+<body>
+    <h1>Hello from JavaScript!</h1>
+    <p id="demo"></p>
+
+    <button id="myButton">Click Me</button>
+    <!-- Link to your JavaScript file here -->
+    <script src="script.js"></script>
+</body>
+
+..etc
+at script.js
+// Get the button element
+const button = document.getElementById("myButton");
+
+// Add a click event listener
+button.addEventListener("click", greet);
+
+function greet(){
+
+        var len = 3;
+        for(var i = 0;  i< len; i+=1){
+                document.getElementById("demo").innerHTML = " i " + i ;
+                confirm("PAUSE");
+        
+        }
+}
+
+then open it in a browser
+
+
+For physical printing: Use window.print() to open the browser's print dialog, which allows the user to print the current webpage.
+
+
+//declaring function
+A function parameter is a named variable that a function expects to receive when it is called. Think of it as a placeholder for a value that will be used inside the function's code.
+
+Here's a breakdown of how it works:
+
+Defining Parameters: When you create a function, you list the parameters inside the parentheses (). These are the variables that the function is set up to receive.
+
+JavaScript
+
+// Here, 'a' and 'b' are the parameters
+function addNumbers(a, b) {
+  return a + b;
+}
+Passing Arguments: When you call the function, you provide the actual values for those parameters. These values are called arguments.
+
+JavaScript
+
+// Here, 5 and 10 are the arguments
+let sum = addNumbers(5, 10);
+console.log(sum); // Output: 15
+In this example, the value 5 is passed to the parameter a, and 10 is passed to the parameter b. The function then uses those values to perform the addition.
+
+You can pass any type of data as an argument, including numbers, strings, arrays, or objects.
+
+
+
+// Get a reference to the input field
+const nameInput = document.getElementById('nameInput');
+
+// Get the value from the input field
+const inputValue = nameInput.value;
+
+// Print the retrieved value to the console
+console.log(inputValue);
+
+
+
+//sample code output 
+
+ const addButton = document.getElementById('buttonExecute');
+                               
+                                addButton.addEventListener('click', inputBox);
+                                function inputBox(){//3
+                                        let userName = prompt("enter string");
+                                        console.log("you enter " + userName);
+
+
+
+
+///////////////////////////////////////////////////////////////////
+// PRIMITIVE  BY VALUE 
+//IMPORTANT BY REFRENCE AND BY VALUE IN JAVA SCRIPT
+
+JavaScript handles variable assignment differently for two categories of data:
+
+Primitive values (numbers, strings, booleans, null, undefined, Symbol).
+
+Reference values (objects, arrays, functions).  //use const declaration to avoid reference
+
+Assignment by Value (for Primitive Types)
+When you assign a variable containing a primitive value to another variable, a copy of the value is created. They are completely independent of each other.
+
+Example:
+
+JavaScript
+
+let a = 10;
+let b = a; // The value '10' is copied to 'b'
+
+b = 20; // We change 'b'
+
+console.log(a); // Output: 10 (a is unaffected)
+console.log(b); // Output: 20
+In this case, changing b does not affect a because a and b hold two separate, distinct values in memory.
+
+Assignment by Reference (for Reference Types)
+When you assign a variable containing a reference value (like an object or an array) to another variable, the reference (or memory address) is copied, not the value itself. Both variables now point to the exact same object in memory.
+
+Example:
+
+JavaScript
+
+let obj1 = { name: 'Alice' };
+let obj2 = obj1; // The reference to the object is copied
+
+obj2.name = 'Bob'; // We change a property on obj2
+
+console.log(obj1.name); // Output: 'Bob' (obj1 is affected)
+console.log(obj2.name); // Output: 'Bob'
+Here, changing a property on obj2 also changes it for obj1 because they both refer to the same object in your computer's memory.
+
+This is a crucial concept to understand when working with objects and arrays, as it can lead to unexpected side effects if you're not careful.
+
+
+///////////////////////////////////////////////////////////////////
+// REFERENCE   BY REFERENCE VALUE
+//IMPORTANT COPYING A VALUE ONLY AND NOT GIVING THE MEMORY ADRESS OF A VARIABLE
+
+How to Avoid Reference Assignment in JavaScript
+When you assign one object or array variable to another, you are not creating a new copy; you are simply creating a new reference to the same data in memory. To avoid this, you must explicitly create a new, independent copy.
+
+1. The Spread Syntax (...)
+This is the most modern and widely used method for creating a shallow copy of an array or object. It's concise and easy to read.
+
+For Arrays
+The spread syntax creates a new array and "spreads" the elements of the original array into it.
+
+const originalArray = [1, 2, 3];
+
+// Creates a new array with the same elements
+const newArray = [...originalArray];
+
+newArray.push(4); // We modify the new array
+
+console.log(originalArray); // Output: [1, 2, 3] (unaffected)
+console.log(newArray);      // Output: [1, 2, 3, 4]
+
+For Objects
+The same principle applies to objects. The spread syntax creates a new object and copies the properties from the original.
+
+const originalObject = { name: 'Alice', age: 30 };
+
+// Creates a new object with the same properties
+const newObject = { ...originalObject };
+
+newObject.age = 31; // We modify the new object
+
+console.log(originalObject.age); // Output: 30 (unaffected)
+console.log(newObject.age);      // Output: 31
+
+2. The Object.assign() Method
+This method is another way to create a shallow copy of an object. It copies all enumerable own properties from one or more source objects to a target object.
+
+const originalObject = { make: 'Honda' };
+
+// Creates a new, empty object {} and copies properties into it
+const newObject = Object.assign({}, originalObject);
+
+newObject.make = 'Toyota';
+
+console.log(originalObject.make); // Output: "Honda" (unaffected)
+console.log(newObject.make);      // Output: "Toyota"
+
+3. Shallow Copy vs. Deep Copy: An Important Distinction
+The methods above (... and Object.assign()) create shallow copies. This means they copy the top-level properties and values, but if a property's value is another object or array, they only copy the reference to that nested object, not the object itself.
+
+Example of a Shallow Copy Issue:
+
+const user = {
+  name: "Bob",
+  address: { street: "123 Main St" } // A nested object
+};
+
+// Creates a shallow copy
+const userCopy = { ...user };
+
+userCopy.name = "Charlie";                  // This works as expected (primitive value)
+userCopy.address.street = "456 Oak Ave";    // This modifies the original object!
+
+console.log(user.address.street); // Output: "456 Oak Ave" (The original was changed)
+
+4. How to Create a Deep Copy
+To truly copy an object with all its nested properties, you need a deep copy. A simple, though not always perfect, method is to use JSON.parse() and JSON.stringify().
+
+const user = {
+  name: "Bob",
+  address: { street: "123 Main St" }
+};
+
+// Converts the object to a string, then back to a new object
+const userDeepCopy = JSON.parse(JSON.stringify(user));
+
+userDeepCopy.address.street = "456 Oak Ave";
+
+console.log(user.address.street);       // Output: "123 Main St" (The original is unaffected)
+console.log(userDeepCopy.address.street); // Output: "456 Oak Ave"
+
+While this method works for many cases, it has limitations (e.g., it doesn't handle functions, undefined, or Symbol properties). For more robust deep copying, it's common to use a library like Lodash.
+
+
+BY REFERENCE IN ARRAY
+whole array dapat ang i-aasign hindi ung isang element ex:
+
+let originalArray = [1, 2, 3];
+
+// The new variable holds a reference to the same array
+let newArray = originalArray; 
+
+// Modify the new variable
+newArray.push(4);
+
+// The original array is also changed because both variables point to the same location
+console.log(originalArray); 
+// Expected output: [1, 2, 3, 4]
+
+console.log(newArray); 
+// Expected output: [1, 2, 3, 4]
+
+
+pero pag nag pasa ang single variable sa isang element ng array at binago ang laman ng single variable ay hindi aafecto sa array
+
+let var = 10;
+
+newArray[ 0 ] =  var; // aapecto sa originalArray
+var = 100; //hindi aapecto sa originalArray at newArray
+
+
+string format in console.log
+
+" string ", var     // displays variable  string var
+'the
+quick'    //display   the
+	               quick
+
+
+PEDENG IBANG DECLARATION AT MAPAPASAHAN NG ARRAY ex:
+
+let oldArray = [11,12,13];
+let unknown = 111;
+unknown = oldArray;
+unknown[0] = 1000;
+console.log("unknown ", unknown , "\noldArray " , oldArray); // output unknown  (4) [1000, 12, 13, 14] 
+								       oldArray  (4) [1000, 12, 13, 14]
+
+                          
+FUNCTION PARAMETER AND FUNCTION RETURN
+
+function createGreeting(name) { //3  note kung gagawin mong name = 1 ay pag hindi na assignan ng value ang name ay 1 ang default
+if (name) { //4
+return "Hello, " + name + "!"; // Returns a string
+}//4
+                              
+return "Hello, Guest!"; // Returns a different string if no name is provided
+}//3
+
+let userGreeting = createGreeting("Alice");
+console.log(userGreeting); // Outputs: "Hello, Alice!"
+
+let defaultGreeting = createGreeting();
+console.log(defaultGreeting); // Outputs: "Hello, Guest!"
+
+function noReturn() { //5
+let x = 5;
+// This function doesn't have a return statement
+} //5
+
+console.log(noReturn()); // Outputs: undefined
+
+NOTE: ang null ay empty variable, ang undefined ang var na hindi na assignan
+
+
+//////////////////////////////////////////////////////
+Arrow Functions and Implicit Return part ng function return
+With arrow functions, you can use a shorthand for returning an object. If the function body consists of a single return statement, you can omit the return keyword and the curly braces. However, for returning objects, you must wrap the object literal in parentheses () to avoid a common syntax error. Without the parentheses, JavaScript would interpret the curly braces as the start of the function body, not an object.
+
+JavaScript
+// Incorrect: JavaScript thinks `{` is a block, not an object
+// const createPerson = (name, job) { name: name, job: job }; ❌
+// Correct: Parentheses tell JavaScript to treat `{...}` as an object
+const createPerson = (name, job) => ({ name: name, job: job });
+
+let person = createPerson("Bob", "Developer");
+console.log(person); // Outputs: { name: 'Bob', job: 'Developer' }
+
+
+//////////////////////////////////////////////////////
+Returning an Object with Methods
+An object returned by a function can also contain methods (functions as properties). This allows you to create an object that not only holds data but also has built-in behaviors.
+
+function createCharacter(name, health) {
+  return {
+    name: name,
+    health: health,
+    // A method to decrease health
+    takeDamage(amount) {
+      this.health -= amount;
+      console.log(`${this.name} took ${amount} damage. Health is now ${this.health}`);
+    }
+  };
+}
+
+let player = createCharacter("Warrior", 100);
+console.log(player); // Outputs: { name: 'Warrior', health: 100, takeDamage: [Function: takeDamage] }
+
+player.takeDamage(20); // Outputs: Warrior took 20 damage. Health is now 80
+
+//////////////////////////////////////////////////////
+Scope
+var is function-scoped, meaning a variable declared with var is only accessible within the function it's declared in. If declared outside any function, it is globally scoped.
+
+let is block-scoped, meaning a variable declared with let is confined to the block of code (defined by curly braces {}) it's declared in. This includes if statements, for loops, and other blocks. This makes let a safer choice for avoiding variable leakage.
+
+function example() {
+  if (true) {
+    var varVariable = "I'm var"; // Function-scoped
+    let letVariable = "I'm let";   // Block-scoped
+    console.log(varVariable); // I'm var
+    console.log(letVariable); // I'm let
+  }
+  
+  console.log(varVariable); // I'm var (accessible here)
+  console.log(letVariable); // ReferenceError: letVariable is not defined
+}
+example();
+
+
+Re-declaration
+You can re-declare a var variable within the same scope without an error. This can lead to bugs where you accidentally overwrite a variable.
+
+You cannot re-declare a let variable in the same scope. This strict behavior helps prevent naming conflicts and accidental overwrites, making your code more predictable.
+
+var myVar = "first declaration";
+var myVar = "second declaration"; // This is allowed
+console.log(myVar); // second declaration
+
+let myLet = "first declaration";
+let myLet = "second declaration"; // SyntaxError: Identifier 'myLet' has already been declared
+
+
+//////////////////////////////////////////////////////
+scope defines the accessibility of variables, functions, and objects in your code. It determines where a variable is available for use.
+
+Global Scope: A variable declared in the global scope can be accessed from anywhere in your code. It's defined outside of any function or block.
+
+Function Scope: A variable declared with var inside a function is only accessible within that function. This is a key difference from block scope.
+
+Block Scope: A variable declared with let or const inside a block of code (denoted by curly braces {}), such as an if statement or a for loop, is only accessible within that block. This is the most common type of scope in modern JavaScript.
+
+////////////////////////////////////
+function counter
+
+function createCounter() {
+  let count = 0; // This variable is private to the counter
+
+  // The inner function 'increment' has access to 'count'
+  function increment() {
+    count++;
+    console.log(count);
+  }
+
+  // The outer function returns the inner function
+  return increment;
+}
+
+// 'counter1' is now the 'increment' function
+const counter1 = createCounter();
+
+counter1(); // Outputs: 1
+counter1(); // Outputs: 2
+
+// Each new call to 'createCounter' creates a new, independent closure
+const counter2 = createCounter();
+counter2(); // Outputs: 1
+
+
+//////////////////////////////////////////////
+OBJECT TOPIC 
+in object how to add new property
+
+Dot Notation
+
+'use strict';
+
+let myCar = {
+  make: 'Honda',
+  model: 'Civic'
+};
+
+// This works perfectly fine in strict mode
+myCar.year = 2024;
+
+console.log(myCar); 
+// Output: { make: 'Honda', model: 'Civic', year: 2024 }
+             
+
+ Bracket Notation
+'use strict';
+
+let myUser = {
+  name: 'Jane Doe'
+};
+
+let newProperty = 'email';
+myUser[newProperty] = 'jane.doe@example.com';
+
+console.log(myUser);
+// Output: { name: 'Jane Doe', email: 'jane.doe@example.com' }
+
+Both of these methods are fully compatible with 'use strict' as long as the object you're modifying is extensible, which is the default state for a newly created object.
+
+////////////////////////
+extensible object is an object to which you can add new properties. By default, all objects you create are extensible.
+ang extensible ay ung makakapag add new ka ng property sa isang object
+
+
+Extensibility is a state of an object that can be controlled with the Object.preventExtensions() method. When an object is extensible, you can use dot notation, bracket notation, or other methods to add new key-value pairs to it.
+
+let myObject = {}; // By default, this is extensible
+
+// Add a new property to the extensible object
+myObject.name = 'John Doe';
+console.log(myObject); // Outputs: { name: 'John Doe' }
+
+Preventing Extensions
+To make an object non-extensible, you use Object.preventExtensions(). Once an object is non-extensible, you cannot add any new properties to it. You can still modify or delete existing properties.
+
+let user = {
+  id: 101,
+  name: 'Alice'
+};
+
+// Make the object non-extensible
+Object.preventExtensions(user);
+
+// Trying to add a new property will fail
+user.email = 'alice@example.com';
+
+// In strict mode, this will throw a TypeError
+// In non-strict mode, it will fail silently
+console.log(user); // Outputs: { id: 101, name: 'Alice' } (unchanged)
+
+The concept of extensibility is part of the broader set of object characteristics that can be managed, including writable, configurable, and enumerable, which are controlled by methods like Object.seal() and Object.freeze().
+
+//////////////////////////////////////
+newArray.append = [ ] is not legal in JavaScript. The append method does not exist on a standard JavaScript array.
+
+How to Correctly Add Elements to an Array
+To add elements to a JavaScript array, you should use the standard array methods:
+
+push(): Adds one or more elements to the end of an array. This is the most common and direct way to append items.
+
+let newArray = [];
+newArray.push("item1");
+newArray.push("item2", "item3");
+
+console.log(newArray); // Output: ["item1", "item2", "item3"]
+
+
+concat(): Merges two or more arrays. It creates and returns a new array without modifying the original.
+
+let arr1 = [1, 2];
+let arr2 = [3, 4];
+let combinedArray = arr1.concat(arr2);
+
+console.log(combinedArray); // Output: [1, 2, 3, 4]
+console.log(arr1);        // Output: [1, 2] (original array is unchanged)
+
+
+Spread Syntax (...): This is a modern and very flexible way to append elements. It creates a new array by "spreading" the elements of one array into another.
+
+let newArray = [1, 2];
+let anotherArray = [...newArray, 3, 4];
+
+console.log(anotherArray); // Output: [1, 2, 3, 4]
+
+
+
+///////////////////////////////
+MULTI DIMENSION ARRAY
+
+let array= [];
+let extendIt = 11;
+console.log("array ", array);
+
+let i = 0, j= 0;
+while( i < 2){//3
+array.push([])
+j= 0;
+while( j < 2){//4
+array[i].push(j+ extendIt);
+j+=1;
+}//4
+extendIt +=10;
+i+=1;
+}//3
+
+i = 0, j= 0;
+while( i < 2){//3
+
+j= 0;
+while( j < 2){//4
+console.log("i " , i , ", j ", j , ", array ", array[i][j]);
+j+=1;
+}//4
+i+=1;
+}//3
+
+
+let multiArray = [ [  [1, 2] , [4, 5]  ], [ [6, 7] , [8, 9] ] ];
+
+for(let i =0; i < 2 ; i+=1){//10
+
+    for(let j =0; j < 2 ; j+=1){//11
+
+        for(let k =0; k < 2 ; k+=1){//12
+
+            console.log("i " , i , ", j ", j , ", k ", k , ", multiArray ", multiArray[i][j][k]);
+
+        }//12
+
+    }//11
+
+}//10
+
+/////////////////////////////////////////
+Object-Oriented Programming (OOP) is a style of programming that organizes code into objects. In JavaScript, this is primarily done using prototypes, and more recently, the class syntax.
+
+Key Concepts of OOP
+There are three core principles that define OOP:
+
+Encapsulation: This is the practice of bundling data and the methods that operate on that data into a single unit, which is an object. It hides the internal workings of an object from the outside world, so you can only interact with it through a public interface. This protects the data from being accidentally changed.
+
+Inheritance: This allows you to create a new class (a "child" class) that is based on an existing one (a "parent" class). The child class inherits all the properties and methods from the parent, and you can add new ones or modify existing ones. This promotes code reuse and creates a clear hierarchy.
+
+Polymorphism: This means "many forms." It's the ability of an object to take on different forms, typically through method overriding. A child class can have a method with the same name as a parent class, but with a different implementation. This allows you to use a single interface to handle different types of objects.
+
+1. Defining a Class
+You define a class using the class keyword. A special method called constructor() is where you set the initial properties of the object.
+
+class Dog {
+  constructor(name, breed) {
+    this.name = name;
+    this.breed = breed;
+  }
+}
+
+// Create a new object (instance) of the Dog class
+const myDog = new Dog('Fido', 'Golden Retriever');
+console.log(myDog.name); // Output: Fido
+
+
+2. Adding Methods
+You can add methods directly inside the class body. These methods will be available on all instances of the class.
+
+class Dog {
+  constructor(name, breed) {
+    this.name = name;
+    this.breed = breed;
+  }
+
+  bark() {
+    return `${this.name} says Woof!`;
+  }
+}
+
+const myDog = new Dog('Fido', 'Golden Retriever');
+console.log(myDog.bark()); // Output: Fido says Woof!
+
+
+3. Inheritance with extends
+To create a subclass, you use the extends keyword. The super() method is used inside the constructor to call the parent class's constructor, ensuring the parent's properties are also initialized.
+
+class ServiceDog extends Dog {
+  constructor(name, breed, specialty) {
+    super(name, breed); // Call the parent constructor
+    this.specialty = specialty;
+  }
+
+  // A method that's only on the ServiceDog class
+  getSpecialty() {
+    return `${this.name} is a ${this.specialty} service dog.`;
+  }
+}
+
+const guideDog = new ServiceDog('Buddy', 'Labrador', 'guide');
+console.log(guideDog.bark()); // Inherited method still works: Buddy says Woof!
+console.log(guideDog.getSpecialty()); // New method: Buddy is a guide service dog.
+
+////////////////////////////////////
+ JavaScript, when you define a class, its member variables (properties) and methods are public by default. This means you don't need any special keyword to declare them as public.
+
+Declaring a Public Member Variable
+You declare a public member variable by defining it inside the constructor method using this.
+
+Here's a simple Car class with a public member variable called make:
+
+class Car {
+  constructor(make, model) {
+    // 'make' and 'model' are public member variables
+    this.make = make; 
+    this.model = model;
+  }
+}
+
+
+Accessing a Public Member Variable
+Once you've created an instance of the class, you can access its public member variables directly.
+
+const myCar = new Car('Honda', 'Civic');
+
+// Access the public member variable 'make'
+console.log(myCar.make); 
+// Output: Honda
+
+// You can also change the value of a public member variable
+myCar.make = 'Toyota';
+
+console.log(myCar.make);
+// Output: Toyota
+
+
+///////////////////////////
+using private member of class
+
+class BankAccount {
+  // 1. Declare the private member with the # prefix
+  #balance;
+
+  constructor(initialBalance) {
+    // 2. You can access and set it inside the constructor
+    this.#balance = initialBalance; //note #var used outside constructor
+                                //this.#balance got error
+  }
+
+  // A public method to deposit money
+  deposit(amount) {
+    if (amount > 0) {
+      this.#balance += amount;
+      console.log(`Deposited: $${amount}. New balance is: $${this.#balance}`);
+    } else {
+      console.log("Deposit amount must be positive.");
+    }
+  }
+
+  // A public method to get the balance
+  getBalance() {
+    return this.#balance;
+  }
+}
+
+// Create a new instance of the class
+const myAccount = new BankAccount(100);
+
+// Use a public method to interact with the private member
+myAccount.deposit(50); 
+
+// You can get the balance using the public getter method
+console.log(`Current balance: $${myAccount.getBalance()}`);
+
+// This will cause a SyntaxError: Private field '#balance' must be declared in an enclosing class
+try {
+  console.log(myAccount.#balance); 
+} catch (error) {
+  console.error("Error accessing private member:", error.message);
+}
+
+///////////////////////////////////
+prompt in java script
+
+let userInput = prompt("Please enter a string:");
+
+if (userInput !== null) {
+    // If the user clicks OK, userInput is the string they typed
+    console.log("You entered: " + userInput);
+} else {
+    // If the user clicks Cancel, userInput is null
+    console.log("Input was cancelled.");
+}
+
+//////////////////////////////
+Converting to an Integer
+To convert a string to a whole number (an integer), you use the parseInt() method. It parses a string and returns an integer. It will stop parsing as soon as it encounters a non-numeric character.
+
+
+let str1 = "123";
+let num1 = parseInt(str1);
+console.log(num1); // Output: 123
+
+let str2 = "45.67";
+let num2 = parseInt(str2);
+console.log(num2); // Output: 45 (it stops at the decimal point)
+
+let str3 = "89 meters";
+let num3 = parseInt(str3);
+console.log(num3); // Output: 89 (it stops at the 'm')
+
+let str4 = "meters 89";
+let num4 = parseInt(str4);
+console.log(num4); // Output: NaN (Not a Number)
+
+
+
+let num5 = parseInt("10", 10);
+console.log(num5); // Output: 10
+
+
+let str1 = "123.45";
+let num1 = parseFloat(str1);
+console.log(num1); // Output: 123.45
+
+let str2 = "123.45.67";
+let num2 = parseFloat(str2);
+console.log(num2); // Output: 123.45 (it stops at the second decimal point)
+
+let str3 = "45.67 dollars";
+let num3 = parseFloat(str3);
+console.log(num3); // Output: 45.67
+
+
+let str1 = "123";
+let num1 = +str1;
+console.log(num1); // Output: 123
+
+let str2 = "45.67";
+let num2 = +str2;
+console.log(num2); // Output: 45.67
+
+let str3 = "hello";
+let num3 = +str3;
+console.log(num3); // Output: NaN
+
+
+
+let str1 = "123";
+let num1 = Number(str1);
+console.log(num1); // Output: 123
+
+let str2 = "45.67";
+let num2 = Number(str2);
+console.log(num2); // Output: 45.67
+
+let str3 = "89 meters";
+let num3 = Number(str3);
+console.log(num3); // Output: NaN
+
+/////////////////////////////////
+==  PATH === == EQUAL AND TRIPLE EQUAL CONDITION
+
+That is a crucial question about Type Coercion in JavaScript! The behavior inside an if condition when comparing a string and a number is predictable, but it might not be what you initially expect.
+
+When an if condition uses a non-strict comparison operator (==), JavaScript performs an automatic conversion process (coercion) to make the types match.
+
+The Rule: Number Wins
+In JavaScript's non-strict comparison (==), if you compare a string and a number, the string is converted into a number before the comparison is made.
+
+The primary rule in the specification states:
+
+If the operands are of different types and one of them is a Number and the other is a String, the String is converted to a Number, and the comparison proceeds.
+
+Example Breakdown (Non-Strict ==)
+Consider the following comparisons:
+
+Comparison	Conversion Process	Result
+'5' == 5	The string '5' is converted to the number 5. (5 == 5)	true
+'20' == 20.00	The string '20' is converted to the number 20. (20 == 20)	true
+'2x' == 2	The string '2x' is converted to a number. Since it can't be parsed, it results in NaN (Not a Number). (NaN == 2)	false
+
+Export to Sheets
+⚠️ The Recommended Solution: Strict Comparison (===)
+To avoid confusing type coercion rules entirely, the recommended best practice in JavaScript is to always use the Strict Equality Operator (===).
+
+What Strict Equality Does
+The === operator checks two things:
+
+Value: Are the values the same?
+
+Type: Are the data types the same?
+
+If the types are different (like string vs. number), it immediately returns false without performing any conversion.
+
+Comparison	Process	Result
+'5' === 5	Types are different (String vs. Number).	false
+'2x' === 2	Types are different.	false
+
+////////////////////////////
+.map()  PATH MAP() PAG LOOP NG INDEX AT VALUE NG ARRAY MAG RETURN NG ARRAY
+
+map returns array
+The callback function provided to .map() is executed once for every element in the array and can receive up to three positional parameters in a specific, mandatory order.
+
+Here is the complete signature of the callback function:
+
+Complete Signature of the .map() Callback
+The syntax for the callback is:
+
+array.map(callback(currentValue,index,array)=>{…})
+Position	Parameter Name	Required/Optional	Description
+1st	currentValue (e.g., item, value)	Required	The element value being processed in the current iteration.
+2nd	index (e.g., i)	Optional	The index position (starting from 0) of the element being processed.
+3rd	array (e.g., arr)	Optional	A reference to the original array that .map() was called upon.
+
+Export to Sheets
+Examples of Usage
+You only need to include the parameters you actually intend to use.
+
+1. Value Only (Most Common)
+If you only need the value to transform it, you use just the first parameter:
+
+JavaScript
+
+const numbers = [10, 20, 30];
+
+// 'num' is the first parameter (currentValue)
+const strings = numbers.map(num => String(num)); 
+// Result: ["10", "20", "30"]
+2. Value and Index
+If you need to use the position (index) of the element in your transformation (e.g., to create an ID):
+
+JavaScript
+
+const names = ['Anya', 'Ben', 'Cloe'];
+
+// (name, i) uses the first two parameters
+const indexedNames = names.map((name, i) => {
+    return `${i + 1}. ${name}`;
+});
+// Result: ["1. Anya", "2. Ben", "3. Cloe"]
+3. All Three Parameters
+This is rare, but useful if the logic for one element requires looking up data in another part of the original array:
+
+JavaScript
+
+const grades = [90, 85, 95];
+
+// (score, i, arr) uses all three parameters
+const scaledGrades = grades.map((score, i, arr) => {
+    // Example use: Compare score against the length of the array
+    return score + arr.length;
+});
+// Result: [93, 88, 98] (90 + 3, 85 + 3, 95 + 3)
+
+/////////////////////////////////////////////
+//.split( )  SPLIT
+
+The function parameter of split    string.split(delimeter) :returns array
+
+
+const fullString = "apple, orange, banana, grape";
+const delimiter = ", ";
+
+// 1. Split the string, which returns an array: ["apple", "orange", ...]
+// 2. Immediately access the first element [0]
+const firstItem = fullString.split(delimiter)[0]; 
+
+console.log(firstItem); // Output: "apple"
+
+
+const data = "Name: John Doe | ID: 456";
+const delimiter = " | ";
+
+// 1. Split the data.
+// 2. Assign the first element to the variable 'firstName'
+// 3. Use ', ...rest' to discard the remaining elements silently
+const [firstName, ...rest] = data.split(delimiter); 
+
+console.log(firstName); // Output: "Name: John Doe"
+console.log(rest);      // Output: ["ID: 456"] (The discarded rest)
+
+
+////////////////////////////
+//.join()  PATH JOIN() PAG SASAMA NG ARRAY AT RETURN STRING
+
+Parameter of join()
+The .join() method takes one optional parameter called the separator.
+
+Function Signature
+array.join(separator)
+Parameter Name	Required/Optional	Type	Description
+separator	Optional	<string>	The string to be used to separate each element of the array in the resulting string.
+
+Export to Sheets
+Behavior based on the separator
+If separator is...	Behavior	Example Output
+Omitted or undefined	Uses a comma (,) by default.	"a,b,c"
+An empty string ('')	Joins elements with no space or character between them.	"abc"
+A custom string (' - ')	Uses the custom string as the delimiter.	"a - b - c"
+
+Export to Sheets
+2. Return Value of join()
+The .join() method always returns a single, new string.
+
+It iterates over the array elements, converts each element into a string (if it isn't one already), inserts the separator, and then returns the complete string. The original array is never modified.
+
+Example
+JavaScript
+
+const userTags = ["code", "design", "testing", "deploy"];
+
+// Case 1: No separator provided
+const tagStringDefault = userTags.join(); 
+console.log(tagStringDefault); 
+// Returns: "code,design,testing,deploy"
+
+// Case 2: Using a space separator
+const tagStringSpaced = userTags.join(" "); 
+console.log(tagStringSpaced); 
+// Returns: "code design testing deploy"
+
+// Case 3: Using a pipe and space separator
+const tagStringFormatted = userTags.join(" | "); 
+console.log(tagStringFormatted); 
+// Returns: "code | design | testing | deploy"
+
+/////////////////////////////////
+typeof  keyword   PATH TYPEOF PANG ALAM KUNG ANUNG KLASE 
+
+How to Use typeof
+The typeof operator is placed directly before the value you want to check. It returns a string indicating the type.
+
+Syntax
+JavaScript
+
+typeof operand;
+// OR
+typeof (operand);
+Basic Examples
+Code	Output	Actual Type	Explanation
+typeof "hello"	"string"	String	Any text data.
+typeof 42	"number"	Number	Any integer or floating-point value.
+typeof true	"boolean"	Boolean	true or false.
+typeof undefined	"undefined"	Undefined	A variable that has been declared but not assigned a value.
+typeof console.log	"function"	Function	All functions are returned as type "function".
+
+Export to Sheets
+Key Use Cases and Quirks of typeof
+1. Checking for Objects and Arrays
+This is where typeof has a specific behavior:
+
+Objects: typeof returns "object" for regular objects ({}).
+
+Arrays: typeof also returns "object" for arrays ([]).
+
+To distinguish a plain object from an array, you typically need to use the Array.isArray() method instead of typeof.
+
+JavaScript
+
+const myArray = [1, 2, 3];
+const myObject = { a: 1 };
+
+console.log(typeof myArray);       // Output: "object" (Quirk!)
+console.log(Array.isArray(myArray)); // Output: true (The correct way to check)
+console.log(typeof myObject);      // Output: "object"
+2. The null Quirk
+Historically, this is the most famous quirk of JavaScript's typeof operator:
+
+JavaScript
+
+console.log(typeof null); // Output: "object"
+This is a well-known bug that exists for historical reasons and cannot be fixed without breaking millions of websites. When checking for null, you should use a strict equality check (===):
+
+JavaScript
+
+let data = null;
+if (data === null) {
+    console.log("It is explicitly null.");
+}
+3. Conditional Logic
+The most powerful use is in conditional statements to control program flow based on the data type:
+
+JavaScript
+
+function greet(user) {
+    // Check if the user input is a string before capitalizing it
+    if (typeof user === 'string') {
+        console.log(`Hello, ${user.toUpperCase()}!`);
+    } else {
+        console.log("Input is not valid text.");
+    }
+}
+
+greet("Bob");    // Hello, BOB!
+greet(999);      // Input is not valid text.
+In summary, typeof is your go-to tool for quickly determining the nature of a variable, though you need to be aware of its specific results for arrays and null.
+
+/////////////////////////
+//READFILE   FILE SYSTEM LIBRARY
+
+//import { readFile } from 'node:fs/promises';
+
+fs = require('fs/promises');
+
+async function readMyFile() {
+  try {
+    // The 'await' keyword pauses execution of 'readMyFile' 
+    // until the promise from 'readFile' resolves (the file is read).
+    const fileContent = await fs.readFile('myFile.txt', { encoding: 'utf8' });
+    
+    console.log('File is successfully read.');
+    console.log('Content:', fileContent);
+    
+    // Any code here is guaranteed to run *after* the file is read.
+    return fileContent;
+
+  } catch (err) {
+    console.error('An error occurred:', err);
+  }
+}
+
+//if this readMyFile( ) is inside async function 
+//u must use await keyword to call readMyFile ex:  await readMyFile( );
+// You must call the async function
+readMyFile();
+
+/////////
+// WRITEFILE PROMISES NOTE 
+
+import { writeFile } from 'node:fs/promises';: You must import the fs/promises version of the module,
+ not the traditional callback-based fs. The Promise version is what allows you to use await.
+
+if u use declaration 'node:fs/promises' you will need to use await, in every inside async function
+example 
+
+..async function write()
+
+..await writeFile(etc...
+
+
+..in other async function
+
+..await write( etc);
+
+
+..but in regular function or chronous function
+
+..write(etc) //no need to use keyword await
+
+////////
+// ASYNCHRONOUS FUNCTION  CHRONOUS FUNCTION
+
+asynchoronous function blocks the other function use in node.js / most common in I/O input and output( must use async function await )
+and also promises keyword is needed in the library  ex: import { writeFile } from 'node:fs/promises'; or fs = require('fs/promises')
+and if you use async function await, you don't need to use callback function
+
+chronous function does not block/ callback function works fine here
+
+//////////
+//TRY CATCH FINALLY 
+
+The try...catch statement in JavaScript is a fundamental mechanism for handling errors (exceptions) during the execution of code. It allows you to test a block of code for errors while defining a way to gracefully handle the error if one occurs, without crashing the entire program.
+
+⚙️ The Structure of try...catch
+The try...catch statement consists of two main blocks:
+
+1. The try Block
+This is the block of code that you want to monitor for errors. If any statement within this block throws an exception, the execution immediately stops, and control is passed to the catch block.
+
+2. The catch Block
+This block contains the code that handles the error that was thrown in the try block. It receives the error object (conventionally named err or error) as its parameter, which contains information about what went wrong.
+
+3. The finally Block (Optional)
+The finally block contains code that will always execute, regardless of whether an exception was thrown or caught. This is typically used for cleanup tasks (like closing files or network connections).
+
+Complete Syntax
+JavaScript
+
+try {
+  // Code that might throw an error (the protected code)
+} catch (error) {
+  // Code to handle the error (runs ONLY if an error occurs in the 'try' block)
+  console.error("An error occurred:", error);
+} finally {
+  // Code that always runs (optional)
+  console.log("This block executes whether there was an error or not.");
+}
+
+///////////
+//OBJECT TOSTRING DISPLAY ${}
+
+Define a Custom toString() Method 
+You can override the default toString() method within your object definition to return a custom string representation: 
+javascript
+const user = { 
+    name: 'Alice', 
+    age: 30,
+    toString() {
+        return `Name: ${this.name}, Age: ${this.age}`;
+    }
+};
+
+console.log(`User details: ${user}`);
+// Output: User details: Name: Alice, Age: 30
+
+/////
+//DATE FORMAT
+
+function isValidDate(dateInput) {
+    const dateObject = new Date(dateInput);
+    
+    // Check if the timestamp is NaN (which happens if the date is invalid)
+    return !isNaN(dateObject.getTime());
+}
+
+const validTest = isValidDate("2026-03-20");  // true
+const invalidTest = isValidDate("20-3-2026"); // Depends on locale, often false/invalid format
+
+if (isValidDate("2025-08-01")) {
+    console.log("Date is valid, proceed with comparison.");
+} else {
+    console.log("Invalid date format detected!");
+}
+
+/////////
+//DISPLAY MONTH DAY YEAR TOLOCALEDATESTRING
+
+// Output date only, using the default locale (e.g., US)
+console.log(myDate.toLocaleDateString());  
+// Output: 11/6/2025 
+
+// Output date and time, formatted for Germany (de-DE)
+console.log(myDate.toLocaleDateString('de-DE', { dateStyle: 'full', timeStyle: 'short' }));
+// Output: Donnerstag, 6. November 2025, 03:00
+
+
+
+const today = new Date(); //get the current date
+
+const options = {
+    weekday: 'short',    // e.g., 'Tue'
+    year: '2-digit',     // e.g., '24'
+    month: 'long',       // e.g., 'November'
+    day: 'numeric',      // e.g., '5'
+    hour: '2-digit',     // e.g., '03'
+    minute: '2-digit',   // e.g., '54'
+};
+
+// 1. Format for US English (MM/DD/YYYY)
+const usFormat = today.toLocaleDateString('en-US', options);
+console.log(usFormat); 
+// Output: Tue, November 5, 24, 03:54 PM
+
+// 2. Format for German (DD.MM.YYYY)
+const deFormat = today.toLocaleDateString('de-DE', options);
+console.log(deFormat);
+// Output: Di., 5. November 24, 03:54
+
+// 3. Format for Japanese (YYYY/MM/DD)
+const jpFormat = today.toLocaleDateString('ja-JP', options);
+console.log(jpFormat);
+// Output: 火, 2024年11月5日, 15:54
+
+
+//you can set the hours
+// 1. Start with a Date object (today at midnight)
+const targetDate = new Date();
+targetDate.setHours(0, 0, 0, 0); // Reset time to 00:00:00 for a clean start
+
+console.log("Original Date:", targetDate.toLocaleString()); 
+// Output: 11/6/2025, 12:00:00 AM (Your Local Time)
+
+// 2. Set the hours to 2 PM (14) and minutes to 30.
+// Arguments: 14 (hours), 30 (minutes), 0 (seconds), 0 (milliseconds)
+targetDate.setHours(14, 30, 0, 0);
+
+console.log("New Time (2:30 PM):", targetDate.toLocaleString());
+// Output: 11/6/2025, 2:30:00 PM
+
+//////
+//DATE INPUT NEW DATE
+//DATE inputing new date in data type
+const sDate = new Date(inpUser);
+
+
+//////
+// {}  BLANK OBJECT FILTERING OBJECT.KEYS().LENGTH
+Option 1: Using Object.keys().length (Modern and Recommended)
+This is the fastest and most common way to check if an object is empty. It gets an array of all the object's property names and checks if that array's length is zero.
+
+Option 2: Using for...in (Older, but safe)
+You can iterate through the keys using a for...in loop. If the loop starts, the object is not empty, so you can immediately return false.
+
+JavaScript
+
+function isObjectEmpty_forIn(obj) {
+    for (const key in obj) {
+        // If the loop runs once, a key exists, so it's not empty
+        return false;
+    }
+    // If the loop finishes without finding any keys, it is empty
+    return true;
+}
+
+For filtering null or empty data, use **Option
+
+//////
+//UNDEFINED   NULL   EMPTY (FOR STRING ARRAY AND OBJECTS ONLY)
+
+1. undefined: The Absence of Assignment
+undefined means a variable has been declared but has not yet been assigned a value by the programmer. It's the default state of a missing value.When You See It:Declared but not Assigned: let x; console.log(x); (Output: undefined)Missing Argument: A function is called without providing a value for a parameter.Non-existent Property: Trying to read a property that doesn't exist on an object.TypeHow It HappensYour IntentData TypeAutomatically assigned by JS.Unintentional (Value is expected later)Key Check:JavaScriptlet myVar; 
+
+if (typeof myVar === 'undefined') {
+    // This is the safest way to check if a variable is undefined
+}
+
+2. null: The Intentional Absence of an Object 
+null means a variable has been explicitly assigned a value, and that value is nothing. It is used to clear a variable or represent an empty placeholder where an object reference is expected.When You See It:Explicit Assignment: let user = null;DOM (Document Object Model): A query for an element that doesn't exist returns null.TypeHow It HappensYour IntentData TypeMust be manually assigned by the programmer.Intentional (Value is known to be missing)Key Check:JavaScriptlet user = null;
+
+if (user === null) {
+    // This is the direct check for the null value
+}
+
+// NOTE: A major historical oddity in JS:
+// console.log(typeof null); // Output: "object" (This is a bug, but it persists.)
+
+3. Empty: The Absence of Content An empty value is not a data type itself, but a state of a data structure (like an array, object, or string) where the structure exists but contains zero elements or characters.When You See It:Empty String: let text = "";Empty Array: let list = [];Empty Object: let config = {};TypeHow It HappensYour IntentData StateExplicitly created by the programmer.Intentional (Structure exists, content is missing)Key Checks:You must use the structure's properties to check for emptiness:JavaScriptlet text = "  "; // String with whitespace
+let list = [];
+let config = {};
+
+// Check 1: String
+if (text.trim().length === 0) {
+    console.log("Empty String");
+}
+
+// Check 2: Array
+if (list.length === 0) {
+    console.log("Empty Array");
+}
+
+// Check 3: Object
+if (Object.keys(config).length === 0) {
+    console.log("Empty Object");
+}
+
+
+///////////////////
+//REPLACE FUNCTION DELETE STRING
+
+Component  Description
+/         Starts and ends the regular expression.
+\u00A0    This is the specific Unicode escape sequence for the Non-breaking space character.
+/gThe      global flag. This is crucial because it ensures all occurrences of $\mathbf{\\u00A0}$ in the string are replaced, not just the first one.
+''       The replacement string (an empty string), which effectively deletes the character.
+
+
+let cleanedString = originalString.replace(/\u00A0/g, '');
+
+// This will replace ALL whitespace characters (space, tab, newline, \u00A0, etc.)
+let allWhitespaceCleaned = originalString.replace(/\s/g, '');
+
+
