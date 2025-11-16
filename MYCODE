@@ -1,0 +1,588 @@
+"user strict";
+const fs = require('node:fs/promises');
+
+const readline = require('node:readline');
+const { threadName } = require('node:worker_threads');
+// Setup the readline interface
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function inpStr(query = "") {
+    // Return a new Promise that handles the question and its resolution
+    return new Promise(resolve => {
+        rl.question(query, (answer) => {
+            // The 'resolve' function is called with the answer
+            // when the user provides input.
+            resolve(answer);
+        });
+    });
+}
+function clearTerminalScreen() {
+    // Move cursor to the top-left corner (0, 0)
+    process.stdout.write('\x1B[2J');
+
+    // Move cursor to the top-left corner (0, 0) again 
+    // (necessary on some systems to ensure clearing from the start)
+    process.stdout.write('\x1B[0f');
+
+    // OR, more simply and commonly:
+    // process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
+}
+
+//copy only this function
+//flexible array of Object index finder
+//paramter sCompare as string, iKey as number, iIndex, nLen as number, pData as object
+//sCompare the string comparer
+//iKey a Title column to be compare ex: Id,Name,Email
+//iIndex starting index, where the loop starts
+//nLen total leng of the array
+//pData source of Data Array
+//return value number -1 didnot find 
+function fFind(sCompare, iKey, nLen, pData, nIndex = 0) {
+
+    //console.log("\nsCompare ", sCompare, ", iKey ", iKey, ", nLen ", nLen, ", nIndex ", nIndex);
+    for (let i = nIndex; i < nLen; i += 1) {
+
+        const vCompare = Object.values(pData[i]);
+        if (vCompare.length <= iKey) {
+            return null;
+        }
+        const A = vCompare[iKey].toString().toUpperCase();
+        const B = sCompare.toUpperCase();
+
+        //debuger output
+        /*console.log("\ni ", i, "\nvCompare[iKey] ", vCompare[iKey], ", sCompare ", sCompare, "end");
+        console.log(typeof (vCompare[iKey].toString().toUpperCase()));
+        console.log(typeof (sCompare.toUpperCase()));
+
+        console.log("\nA ", A, ", B ", B, "end");
+        */
+
+        if (A.trim() === B.trim()) {
+            //the data is been found, give the located index
+            return i;
+        }
+    }
+    //did not found any
+    return -1;
+}
+
+function csvToArr(csvString) {
+
+    if (csvString == null || csvString == "") {
+        //it will be a blank object
+        return [];
+    }
+
+    // Split the string into lines (rows)   
+    const lines = csvString.trim().split('\n');
+
+    // Get the headers from the first line and split by commas
+    const headers = lines[0].split(',');
+
+    // Process the remaining lines (data)
+    const data = lines.slice(1).map(line => {
+        const values = line.split(',');
+        const obj = {};
+
+        // Map header names to values for each object
+        for (let i = 0; i < headers.length; i++) {
+            obj[headers[i].trim()] = values[i].trim();
+        }
+
+        return obj;
+    });
+
+    return data;
+}
+
+function arrToCsv(arr) {
+    if (arr.length === 0) {
+        return '';
+    }
+
+    // Get the headers from the first object's keys
+    const headers = Object.keys(arr[0]).join(',');
+
+    // Map each object to a string of its values, then join with newlines
+    const rows = arr.map(obj => Object.values(obj).join(',')).join('\n');
+
+    // Combine the headers and the rows
+    return `${headers}\n${rows}`;
+}
+
+async function fGetData(pSwitch) {
+    try {
+        subFileName = "";
+        if (pSwitch == "add") {
+            fileContent = await fs.readFile(filePath + fileName, { encoding: 'utf8' });
+            subFileName = fileName;
+        } else {
+            fileContent = await fs.readFile(filePath + fileNameSell, { encoding: 'utf8' });
+            subFileName = fileNameSell;
+        }
+        console.log("\ndebug fileContent ", fileContent);
+
+        const fileContentSub = csvToArr(fileContent);
+        console.log("\nfile is been read named: ", subFileName);
+        return fileContentSub;
+    } catch (err) {
+        console.log("\nRSM error message: ", err);
+    }
+    return undefined;
+}
+
+async function fSendData(data, pSwitch) {
+
+    const csvString = arrToCsv(data);
+    try {
+        // Use fs.writeFile to save the file
+        // The asynchronous method is preferred to avoid blocking the main thread.
+        if (pSwitch == "add") {
+            await fs.writeFile(filePath + fileName, csvString, 'utf8');
+        } else {
+            await fs.writeFile(filePath + fileNameSell, csvString, 'utf8');
+        }
+        console.log("\nlastly file is been update named: ", fileName);
+    } catch (err) {
+        console.log("\nRSM error message: ", err);
+    }
+
+}
+
+async function addDelete(pIndex, pData) {
+
+    if (pIndex < 0) {
+        console.log("\nRSM error: index must start at 0 to max length");
+        await inpStr("\npress any key...");
+        return;
+    }
+    //console.log("\n\npIndex ", pIndex);
+    //a b c 
+    for (i = pIndex; i < (pData.length - 1); i += 1) {
+
+        //console.log("\ni ", i, ", pData ", pData[i]);
+
+        pData[i] = pData[i + 1];
+    } try {
+
+        pData.pop();
+        console.log("\nSuccesfully deleted ");
+    } catch (err) {
+        console.log("\nRSM Error ", err.name);
+    }
+}
+async function fFindId(parData) {//2
+    while (true) {//3
+        console.log("\n\nPlease input the Id your looking for: \nb to back");
+        cKey = await inpStr("\n");
+        if (cKey == "") {
+            console.log("\nno input is not allowed");
+            continue;
+        }
+        if ("b" == cKey.toLowerCase()) {//4
+            return null;
+        } //4
+        indReturn = fFind(cKey, 0, parData.length, parData);
+        if (indReturn == -1) {//5
+            console.log("\ndid not find the Id: ", cKey);
+            continue;
+        }//5
+        //output row data
+        fPrintData(parData, indReturn, "\nResult of finding Id: ", cKey);
+    }//3
+}//2
+
+//fPrintData print the entire value of the database
+//pData database input that will be use
+//pIndex the starting index to be print
+//pPrompt the initial value to be print
+//pLast last index to be print ( add 1 is use because of iterator stoper < pLast)
+async function fPrintData(pData, pIndex, pPrompt = "", pLast = pIndex + 1) {//2
+    //console.log("\nLINE fPrintData ", pData, ", pIndex ", pIndex,);
+
+    console.log(pPrompt);
+
+    if (pData.length <= 0) {
+        console.log("\nno value to be print ");
+        return;
+    }
+    if (pIndex == null || pData == undefined) {
+        console.log("\nno files found");
+        return;
+    }
+
+    Object.keys(pData[0]).forEach((val, ind) => {
+        fPrintStr(val + " ");
+    });
+    fPrintStr();
+    for (i = pIndex; i < pLast; i += 1) {//3
+        Object.values(pData[i]).forEach((val, ind) => {
+            fPrintStr(val + " ");
+        });
+        console.log();
+    }//3
+
+}//f2
+//keyword print to be print
+function fPrintStr(pStr = "\n") {//2
+    process.stdout.write(pStr);
+}//2
+async function fItem(pData) {//2
+    let dOut = [];
+    //now u have the KeyName, input the target
+    while (true) {//20 
+        console.log("\n\ninput item\nb to back");
+        cKey = await inpStr("\n");
+        if (cKey.toLowerCase() == "b") {
+            return;
+        } else if (cKey == "") {
+            console.log("\nyou did not input anything..");
+        }
+        indReturn = -1;
+        findFlag = false;
+        //infite loop until it reaches the length
+        while (true) { //24
+            indReturn = fFind(cKey, 1, pData.length, pData, indReturn + 1);
+            if (indReturn == -1) { //21
+                //no code here
+                break;
+            } //21
+            findFlag = true;
+            dOut.push(pData[indReturn]);
+        } //24
+        if (findFlag == false) {
+            console.log("\ndidnt find any item like ", cKey);
+            continue;
+        }
+        fPrintData(dOut, 0, "\nresult that u found", dOut.length);
+        dOut = [];
+    }//20
+
+}//2
+
+/*
+totalAmount is in the last item amount
+shall all totalAmount that has come first will be blank value
+same KeyId in on receive
+*/
+//pData data use, 
+//returns -1 undefined, -2 null, 0 empty, positive numbers total of length
+function fDataEmpty(pData) {//2
+    if (typeof pData === "undefined" || pData === null) {
+        return -1;
+    }
+    if (pData === null) {
+        return -2;
+    }
+    if (pData.length === 0) {
+        return 0;
+    }
+    //true, file is empty or have an elements, false undefined or null
+    return pData.length;
+}//2
+
+//date idKey id item pcs amount totalAmount 
+async function fSell(pSellData, pAddData, indexSData = 0, indexAData = 0) {//2
+    //BOOKMARK
+    //keyId: , date:, id: ,  item: , pcs: , amount: , totalAmount:
+    //the orientation of the Sell Data
+    viewData = [];
+    viewIndex = -1;
+
+    sDate = "";
+    sIdKey = "";
+    sId = 0;
+    sItem = "";
+    sPcs = 0;
+    sAmount = 0;
+    sTotalAmount = 0;
+    nLabel = "date";
+    inpUser = "";
+    console.log("\ndebug pSellData.length ", pSellData.length);
+    indexSData = pSellData.length;
+    if (fDataEmpty(pSellData) == 0) {//15
+        indexSData = Number(-1);
+        sIdKey = "1";
+    } else {//15
+
+        //create the id statement
+        sIdKey = pSellData[pSellData.length - 1].idKey;
+        sIdKey = Number(sIdKey) + 1;
+        indexSData = indexSData - 1;
+    }//15
+
+    while (true) {//3
+
+        if (nLabel == "date") {//4
+            console.log("input Date: ")
+            inpUser = await inpStr();
+            if (inpUser == "" || inpUser == null) {//5
+                await inpStr("\nblank input is not valid\npress any...");
+                continue;
+            }//5
+            sDate = new Date(inpUser);
+            if (isNaN(sDate.getTime())) { //7
+                console.log("\ninvalid input of date");
+                continue;
+            }//7
+
+            //console.log("\ndebug sDate ", sDate.toLocaleDateString())
+            const nowDate = new Date();
+            nowDate.setHours(0, 0, 0, 0);
+            sDate.setHours(0, 0, 0, 0);
+
+            //console.log("\ndebug nowDate ", nowDate.toLocaleDateString(), " ,sDate ", sDate.toLocaleDateString());
+            if (nowDate.getTime() > sDate.getTime()) { //8
+                console.log("\n\nyour date must not les than ",
+                    nowDate.toLocaleDateString());
+                continue;
+            }//8
+            nLabel = "id";
+        } else if (nLabel == "id") {//4
+            //leave blank if u want to pass
+            console.log("\n\nYou want to input name enter blank\ninput id: ");
+            inpUser = await inpStr();
+            if (inpUser == "") {//5 
+                //you want to input item
+                nLabel = "item";
+                continue;
+            }//5
+            rIndex = fFind(inpUser, 0, pAddData.length, pAddData);
+            if (rIndex == -1) {//7
+                console.log("\ndidn't find the id ", inpUser, " that ur looking for ");
+                continue;
+            }//7
+            //TULOY TIGNAN KUNG NAAYUS THE idKey
+            sId = pAddData[rIndex].id;
+            sItem = pAddData[rIndex].item;
+            sAmount = pAddData[rIndex].amount;
+            console.log("\nItem: ", sItem);
+            nLabel = "pcs";
+        } else if (nLabel == "item") {//4
+            console.log("\ninput item: ");
+            inpUser = await inpStr();
+            if (inpUser == "") {//10
+                console.log("\nblank input is not valid ");
+                continue;
+            }//10
+            rIndex = fFind(inpUser, 1, pAddData.length, pAddData);
+            if (rIndex == -1) {//11
+                console.log("\ndid not find the item ", inpUser);
+                continue;
+            }//11
+            sId = pAddData[rIndex].id;
+            sItem = pAddData[rIndex].item;
+            sAmount = pAddData[rIndex].amount;
+            nLabel = "pcs";
+        } else if (nLabel == "pcs") {//4
+            //pcs
+            console.log("\ninput pcs: ");
+            inpUser = await inpStr();
+            if (isNaN(Number(inpUser))) {//8
+                console.log("\nnot a valid number ");
+                continue;
+            }//8
+            sPcs = inpUser;
+            const nNum = Number(sPcs) * Number(sAmount);
+            sAmount = nNum.toString();
+            sTotalAmount = Number(sTotalAmount) + Number(sAmount);
+            pSellData.push({
+                idKey: sIdKey, date: sDate.toLocaleDateString(), id: sId, item: sItem,
+                pcs: sPcs, amount: sAmount, totalAmount: ""
+            });
+
+            indexSData = Number(indexSData) + 1;
+            viewIndex += 1;
+            viewData.push(pSellData[Number(indexSData)]);
+
+            //debug
+            fPrintData(pSellData, 0, "\ndebug", pSellData.length);
+            fPrintData(viewData, 0, "\n\ninformation", viewData.length);
+            fPrintStr("Total Amount is " + sTotalAmount);
+            while (true) {//14 
+                console.log("\nDo you want to create additional sale in this receipt Y/N");
+                inpUser = await inpStr();
+                if (inpUser.toLowerCase() == "y") {//15
+                    nLabel = "id";
+                    //keyId: , date:, id: ,  item: , pcs: , amount: , totalAmount:
+                    break;
+                    //BOOKMARK
+                } else if (inpUser.toLowerCase() == "n") {//15
+                    console.log("\ndebug indexSData ", indexSData, ", sTotalAmount ", sTotalAmount);
+                    pSellData[indexSData].totalAmount = sTotalAmount;
+
+                    return;
+                }//15
+
+                console.log("\n\nu must input Y/N ");
+            }//14
+        }//4   
+    }//3
+
+}//2
+
+var sellData = [];
+var addData = [];
+const filePath = "./";
+const fileName = "data.csv";
+const fileNameSell = "sell.csv";
+var nAddId = -1;
+
+//prestarter main to test the async function
+async function preMain() {
+
+    cKey = "";
+
+    //initial get data
+    addData = await fGetData("add");
+    sellData = await fGetData("sell");
+    console.log("\naddData ", addData, "\nsellData ", sellData);
+    if (addData.length <= 0) nAddId = 0;
+    else nAddId = Number(addData[addData.length - 1].id);
+
+    sMenu = "MAIN";
+    while (true) {
+
+        //LEGEND MAIN ADD SELL(OR last way)
+        if (sMenu == "MAIN") { //3
+            console.log("\n\nCRUD sample project\nMAIN MENU\na ADD FORM\ns SELL STOCK FORM\nc clearscreen\nq to exit");
+
+            cKey = await inpStr("\n");
+
+            switch (cKey.toLowerCase()) {//4
+
+                case 'a':
+                    sMenu = "ADD";
+                    break;
+                case 's':
+                    sMenu = "SELL";
+                    break;
+                case 'c':
+                    clearTerminalScreen();
+                    break;
+
+            }//4
+
+            if (cKey.toLowerCase() == 'q') {
+                break;
+            }
+
+            //...  add form 
+        } else if (sMenu == "ADD") { //3
+
+            console.log("\n\nADD FORM\na add \nd delete\nv view\nf find\nb to back");
+
+            cKey = await inpStr("\n");
+            switch (cKey.toLowerCase()) {
+                case 'a':
+                    //input records
+                    console.log("\ninput data records");
+                    nAddId += 1;
+                    sItem = await inpStr("item: ");
+                    sAmount = await inpStr("amount: ");
+                    addData.push({ id: nAddId.toString(), item: sItem, amount: sAmount });
+                    console.log("\nsucessfuly record");
+                    //save it to csv file
+                    await fSendData(addData, "add");
+
+                    break;
+                case 'v':
+                    //view menu
+                    console.log("\nVIEW");
+                    fPrintData(addData, 0, "", addData.length);
+                    await inpStr("\npress any...");
+                    break;
+                case 'd':
+                    while (true) {//11 
+                        console.log("\nDELETE\nchoose an Id to Delete\nb to back");
+                        cKeySub = await inpStr("\n");
+                        if (cKeySub.toLowerCase() == "b") break;
+                        indReturn = fFind(cKeySub, 0, addData.length, addData);
+                        if (indReturn == -1) {//10
+                            console.log("\nDidnt find the match\ny to find the file to be delete again\nany to back");
+                            cKeySub = await inpStr("");
+                            if (cKeySub.toLowerCase() != 'y') { //12
+                                break;
+                            } //12
+                            continue;
+                        }//10
+                        //delete process
+                        await addDelete(indReturn, addData);
+                        break;
+                    }//11
+                    break;
+                case 'f':
+                    //find menu
+                    while (true) {//11 
+                        exitLoop = false;
+                        console.log("\nFIND\ni Id\nn item\nb to back\n");
+                        cKeySub = await inpStr("\n");
+                        jumpLoop = false;
+
+                        switch (cKeySub.toLowerCase()) {//23 
+                            case 'i':
+                                //find Id, then returns the index
+                                await fFindId(addData);
+                                break;
+                            case 'n':
+                                await fItem(addData);
+                                break;
+                            case "b":
+                                exitLoop = true;
+                                break;
+                            default:
+                                console.log("\nyou must input i for id, n for name");
+                        }//23
+                        //exit the semi mainlooper
+                        if (exitLoop == true) {
+                            break;
+                        }
+                    }//11
+                    break;
+                case 'b':
+                    sMenu = "MAIN";
+                    break;
+            }
+
+            //.. add stock here
+        } else if (sMenu == "SELL") {//3
+            //SELL
+            //BOOKMARK
+            while (true) {//10 
+                fPrintStr("\n\nSELL MENU\ns sell\nv view\nb to back\n");
+                cKey = await inpStr();
+                switch (cKey.toLowerCase()) {//11
+                    case 's'://11
+                        await fSell(sellData, addData);
+                        break;
+                    case 'v'://11
+                        fPrintData(sellData, 0, "\nVIEW SALES ", sellData.length);
+                        break;
+                }//11
+
+                if (cKey.toLowerCase() == 'b') {
+                    sMenu = "MAIN";
+                    break;
+                }
+            }//10
+        }//3
+    }
+
+    await inpStr("\n\nexit prog...\npress any...");
+    rl.close();
+}
+
+function main() {
+
+    //calling preMain to test the async function
+    //preMain doesnt need to be called
+    preMain();
+
+}
+
+main();
+
+
